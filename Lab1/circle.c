@@ -38,7 +38,7 @@ float findCircumference(int radius)
 // assumes that the input is valid
 float findSphereVolume(int radius)
 {
-    float Area = (4/3)*3.14*(pow(radius,3));
+    float Area = (4.0/3.0)*3.14*(pow(radius,3));
     return Area;
 }
 
