@@ -1,0 +1,24 @@
+
+
+Ask for divisor
+while divisor is Invalid
+	ask for divisor again
+
+Ask for dividend
+
+while dividend != -1 
+
+	while dividend is Invalid
+		Ask for dividend again
+
+	remainder = Dividend Modulo Divisor
+
+	If remainder != 0
+		say the number is non-divisible
+	Else 
+		The number is divisible
+	
+	Ask for dividend again
+
+
+
