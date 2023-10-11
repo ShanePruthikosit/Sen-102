@@ -9,15 +9,17 @@ void validateInput(char input[])
     int len = strlen(input)-1;
     if (strlen(input)>11)
     {
-        printf("You're too rich for this program");
+        printf("Number is too big overflow detected");
         exit(0);
     }
     for(int letterNumber = 0; letterNumber < len; letterNumber++)
     {
         if (!isdigit(input[letterNumber]))
         {
-            printf("%s", "Please Input a valid positive Integer");
-            exit(1);
+            if(input[letterNumber] != 0 && input[letterNumber] == '-'){
+                printf("%s", "Please Input a valid positive Integer");
+                exit(1);
+            }
         }
     }
 }
@@ -29,7 +31,7 @@ int askInput(char *promptMessage)
     int input = 0;
     printf(promptMessage);
     fgets(inputline,sizeof(inputline),stdin);
-    // validateInput(inputline);
+    validateInput(inputline);
     sscanf(inputline,"%d",&input);
     return input;
 }

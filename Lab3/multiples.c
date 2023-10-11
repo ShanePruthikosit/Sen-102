@@ -10,7 +10,6 @@
 #include <string.h>
 #include <ctype.h>
 
-
 // checks if the user's input is valid or not
 // Arguments:
 //      input - input typed in by the user stored as string
@@ -26,12 +25,16 @@ void validateInput(char input[])
     
     for(int letterNumber = 0; letterNumber < len; letterNumber++)
     {
-        printf("%c",input[letterNumber]);
-        if (!isdigit(input[letterNumber]) && !strcmp(input[letterNumber],".") && !strcmp(input[letterNumber],"-"))
-        {
-            printf("%s", "Please Input a valid positive Integer");
-            exit(1);
-        }
+        for(int letterNumber = 0; letterNumber < len; letterNumber++)
+            {
+                if (!isdigit(input[letterNumber]))
+                {
+                    if(input[letterNumber] != 0 && input[letterNumber] == '-'){
+                        printf("%s", "Please Input a valid positive Integer");
+                        exit(1);
+                    }
+                }
+            }
     }
 }
 
@@ -54,7 +57,6 @@ int askInput(char *promptMessage)
 int main()
 {
     float number = askInput("sus:");
-    number = number;
-    // printf("%i", number);
+    printf("%f", number);
 }
 
