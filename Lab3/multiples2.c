@@ -53,32 +53,54 @@ int askInput(char *promptMessage)
     return input;
 }
 
-int main()
+int askDivisor()
 {
-    int dividend = 0;
     int divisor = 0;
-    int numberOfMultiples = 0;
-    int divisorValidity = 0;
-    while (divisorValidity == 0)
-    {
+    int Validity = 0;
+    while (Validity == 0){
         divisor = askInput("Check for multiples of what number (greater than 0 and less than 10)? ");
         if(divisor <= 0 || divisor >= 10)
         {
             printf("%s", "Illegal Value! \n");
-            divisorValidity = 0;
+            Validity = 0;
         }
         else
         {
-            divisorValidity = 1;
+            Validity = 1;
         }
     }
-    while (dividend != -1)
-    {
-        dividend = askInput("Value to check (-1 to stop)");
-        if (dividend == -1)
+    return divisor;
+}
+
+int askNumberOfChecks()
+{
+    int Validity = 0;
+    int checks = 0;
+    while (Validity == 0){
+        checks = askInput("Check how many Values? ");
+        if(checks < 0)
         {
-            break;
+            printf("%s", "Illegal Value! \n");
+            Validity = 0;
         }
+        else
+        {
+            Validity = 1;
+        }
+    }
+    return checks;
+}
+
+int main()
+{
+    int dividend = 0;
+    int divisor = askDivisor();
+    int numberOfMultiples = 0;
+    int numberOfChecks = askNumberOfChecks();
+    
+    for(int checksDone = 0; checksDone < numberOfChecks; checksDone++)
+    {
+        dividend = askInput("Value to check: ");
         if (dividend%divisor != 0)
         {
             printf("%i is NOT evenly divisible by %i \n", dividend,divisor);
