@@ -62,12 +62,37 @@ int askInput(char *promptMessage)
         }
         else
         {
-            valid = 1;
+            sscanf(inputline,"%d",&input);
+            if(input < 10000000)
+            {
+                valid = 1;
+            }
+            else
+            {
+                valid = 0;
+                printf("invalid amount \n");
+            }
         }
     }
-    sscanf(inputline,"%d",&input);
     return input;
 }
+
+int getAccount(char *promptMessage)
+{
+    int account = askInput(promptMessage);
+    while(account != 2 && account != 1)
+    {
+        printf("invalid option, please enter again\n");
+        account = askInput(promptMessage);
+    } 
+    return account;
+}
+
+// prints a the welcome message alongside the initial balance
+// Arguments:
+//      current - the balance initially generated for the current acc
+//      savings - the balance initially generated for the savings acc
+// assumes that the inputs are doubles
 
 void printWelcome(double current, double savings)
 {
@@ -75,6 +100,8 @@ void printWelcome(double current, double savings)
     printf("%5s Current Account Balance: %10i \n","", (int) current);
     printf("%5s Savings Account Balance: %10i \n","", (int) savings);
 }
+
+// prints out the options for the user
 
 void printOptions()
 {
@@ -85,6 +112,10 @@ void printOptions()
     printf("%5s 4 - Transfer money between accounts \n","");
     printf("%5s 5 - Exit \n","");
 }
+
+// asks the user to choose an option between 1 and 5
+// dependent on askInput
+// returns an int
 
 int chooseOption()
 {
@@ -98,14 +129,16 @@ int chooseOption()
     return option;
 }
 
+// displays the balance from the chosen account
+// Arguments:
+//      *current - the pointer to the balance for the current acc
+//      *savings - the pointer to the balance for the savings acc
+// assumes that the inputs are pointers leading to doubles
+// dependent on ask input
+
 void display(double *current, double *savings)
 {
-    int account = askInput("display balance for which account? (1 for current, 2 for savings): ");
-    while(account != 2 && account != 1)
-    {
-        printf("invalid option, please enter again\n");
-        account = askInput("display balance for which account? (1 for current, 2 for savings): ");
-    } 
+    int account = getAccount("display balance for which account? (1 for current, 2 for savings): ");
     if(account == 1)
     {
         printf("Current Account Balance: %5.1f \n", *current);  
@@ -118,14 +151,16 @@ void display(double *current, double *savings)
     }
 }
 
+// increases the balance of the chosen account
+// Arguments:
+//      *current - the pointer to the balance for the current acc
+//      *savings - the pointer to the balance for the savings acc
+// assumes that the inputs are pointers leading to doubles
+// dependent on ask input
+
 void deposit(double *current, double *savings)
 {
-    int account = askInput("deposit to which account? (1 for current, 2 for savings): ");
-    while(account != 2 && account != 1)
-    {
-        printf("invalid option, please enter again\n");
-        account = askInput("deposit to which account? (1 for current, 2 for savings): ");
-    }
+    int account = getAccount("deposit to which account? (1 for current, 2 for savings): ");
     double depositSum = askInput("Enter amount in baht: ");
     if(account == 1)
     {
@@ -139,20 +174,22 @@ void deposit(double *current, double *savings)
     }
 }
 
+// deducts the balance of the chosen account after checking that there are sufficient funds in there
+// Arguments:
+//      *current - the pointer to the balance for the current acc
+//      *savings - the pointer to the balance for the savings acc
+// assumes that the inputs are pointers leading to doubles
+// dependent on ask input
+
 void withdraw(double *current, double *savings)
 {
-    int account = askInput("withdraw from which account? (1 for current, 2 for savings): ");
-    while(account != 2 &&	account != 1)
-    {
-        printf("invalid option, please enter again\n");
-        account = askInput("deposit to which account? (1 for current, 2 for savings): ");
-    }
-    double depositSum = askInput("Enter amount in baht: ");
+    int account = getAccount("withdraw from which account? (1 for current, 2 for savings): ");
+    double withdrawalSum = askInput("Enter amount in baht: ");
     if(account == 1)
     {
-        if(*current >= depositSum)
+        if(*current >= withdrawalSum)
         {
-            *current = *current - depositSum;
+            *current = *current - withdrawalSum;
             printf("Current Account Balance: %5.1f \n", *current);
         }
         else
@@ -162,9 +199,9 @@ void withdraw(double *current, double *savings)
     }
     else if (account == 2)
     {
-        if(*savings >= depositSum)
+        if(*savings >= withdrawalSum)
         {
-            *savings = *savings - depositSum;
+            *savings = *savings - withdrawalSum;
             printf("Savings Account Balance: %5.1f \n", *savings);
         }
         else
@@ -174,7 +211,77 @@ void withdraw(double *current, double *savings)
     }
 }
 
+// transfer funds from one account to another
+// Arguments:
+//      *current - the pointer to the balance for the current acc
+//      *savings - the pointer to the balance for the savings acc
+// assumes that the inputs are pointers leading to doubles
+// dependent on ask input
 
+void transfer(double *current, double *savings)
+{
+    int senderAccount = getAccount("transfer from which account? (1 for current, 2 for savings): "); //asks the user which accounts they want to transfer from and to
+    int receivingAccount = getAccount("transfer to which account? (1 for current, 2 for savings): ");
+    if(senderAccount == receivingAccount)
+    {
+        printf("Both accounts are the same. Please try again.\n");
+        return;
+    }
+    double depositSum = askInput("Enter amount in baht: "); //asks user for deposit fund
+    if(senderAccount == 1) //checks if fund is sufficient for the transaction and deducts from the balance if it is
+    {
+        if(*current >= depositSum)
+        {
+            *current = *current - depositSum;
+            printf("Current Account Balance: %5.1f \n", *current);
+        }
+        else
+        {
+            printf("insufficient funds \n");
+            printf("%5s current Account Balance: %5.1f \n","", *current);  
+            printf("%5s Savings Account Balance: %5.1f \n","", *savings);  
+            return;
+        }
+    }
+    else if (senderAccount == 2)
+    {
+        if(*savings >= depositSum)
+        {
+            *savings = *savings - depositSum;
+            printf("Savings Account Balance: %5.1f \n", *savings);
+        }
+        else
+        {
+            printf("insufficient funds \n");
+            printf("%5s current Account Balance: %5.1f \n","", *current);  
+            printf("%5s Savings Account Balance: %5.1f \n","", *savings);
+            return;  
+        }
+    }
+    if(receivingAccount == 1)
+    {
+        *current = *current + depositSum;
+        printf("Current Account Balance: %5.1f \n", *current);  
+    }
+    else if (receivingAccount == 2)
+    {
+        *savings = *savings + depositSum;
+        printf("Savings Account Balance: %5.1f \n", *savings);  
+    }
+}
+
+// prints out the final balance
+// Arguments:
+//      *current - the pointer to the balance for the current acc
+//      *savings - the pointer to the balance for the savings acc
+// assumes that the inputs are pointers leading to doubles
+
+void printFinalBalance(double *current, double *savings)
+{
+    printf("Final Balances: \n");
+    printf("%5s current Account Balance: %5.1f \n","", *current);  
+    printf("%5s Savings Account Balance: %5.1f \n","", *savings);  
+}
 
 int main()
 {
@@ -199,10 +306,11 @@ int main()
             withdraw(&currentBalance,&savingsBalance);
             break;
         case 4:
-            
+            transfer(&currentBalance,&savingsBalance);
             break;
         case 5:
-
+            printFinalBalance(&currentBalance,&savingsBalance);
+            exit(0);
             break;
         default:
             printf("something went wrong please be patient");
