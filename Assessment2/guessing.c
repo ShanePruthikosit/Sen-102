@@ -1,9 +1,9 @@
 // guessing.c
 //
 // Assessment 2 program that 
-// 
-// Assumptions: the starting point of a line is always left relative to the end point of the line and verticals start from the bottom
-// Created by shane on 21/11/2023
+// asks the user to guess a number for five rounds with seven tries each . 
+// Prints out the hidden numbers, numbers guess and average tries at the end of the program
+// Created by shane on 22/11/2023
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -31,13 +31,10 @@ int validateInput(char input[])
     }
     for(int letterNumber = 0; letterNumber < len; letterNumber++)
     {
-        for(int letterNumber = 0; letterNumber < len; letterNumber++)
-            {
-                if (!isdigit(input[letterNumber]))
-                {
-                    return 0;
-                }
-            }
+        if (!isdigit(input[letterNumber]))
+        {
+            return 0;
+        }
     }
     return 1;
 }
@@ -76,13 +73,13 @@ int main()
     double totalGuesses = 0;
     int correctGuesses = 0;
     int guessArray[5];
-    for(int round = 0; round<5; round++)
+    for(int round = 0; round<5; round++) // for loop for rounds
     {
-        int hiddenNumber = rand() % 25 + 1; 
+        int hiddenNumber = rand() % 25 + 1;  //initialize hidden number for round
         guessArray[round] = hiddenNumber;
         printf("\n");
         printf("Round %i \n", round+1);
-        for(int tries = 0; tries < 7; tries++)
+        for(int tries = 0; tries < 7; tries++) // for loop for tries 
         {
             int guessNumber = askInput("What is your guess? ");
             if(guessNumber == hiddenNumber)
@@ -104,7 +101,7 @@ int main()
             }
         }
     }
-    printf("\n");
+    printf("\n");                   // prints out results
     printf("Random values to be guessed: ");
     for(int i = 0; i<5; i++)
     {
