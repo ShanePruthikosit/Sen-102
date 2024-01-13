@@ -33,7 +33,7 @@ char *toLowerString(char inputString[])
 {
     char *input = inputString;
     sscanf(inputString,"%s ^%[\n]", input);
-    for(int letter = 0; letter < strlen(inputString)-1; letter++)
+    for(int letter = 0; letter < strlen(inputString); letter++)
     {
         inputString[letter] = tolower(inputString[letter]);
     }
@@ -76,7 +76,6 @@ int validateFloat(char input[])
             }
             else
             {
-                printf("%s", "Please Input a valid float");
                 return 0;
             }
         }
@@ -102,7 +101,7 @@ float getFloat(char *promptMessage)
         fgets(inputline,sizeof(inputline),stdin);
         if(validateFloat(inputline) == 0)
         {
-            printf("%s", "Please Input a valid float \n");
+            printf("Please Input a valid float \n");
             valid = 0;
         }
         else
@@ -154,45 +153,103 @@ void sorter(record list[],int recordLength)
             if(list[i].BMI > list[i+1].BMI)
             {
                 temporaryRecord = list[i];
-                printf("higher: %f\n",list[i].BMI);
-                printf("lower: %f\n",list[i+1].BMI);
-                printf("\n");
                 list[i] = list[i+1];
                 list[i+1] = temporaryRecord;
             }
         }
     }
 }
-            // printf("%.1f \n",list[i].BMI);
 
+float findMedian(record list[], int recordLength)
+{
+    float median;
+    int halfLength = recordLength/2;
+    if(recordLength < 1)
+    {
+        printf("No data recorded. Exiting program.");
+        exit(0);
+    }
+    else if ((recordLength %2) == 0)
+    {
+        median = (list[halfLength - 1].BMI + list[halfLength].BMI)/2;
+        printf("\nMedian BMI value is %.2f \n \n", median);
+        return median;
+    }
+    else if ((recordLength %2) != 0)
+    {
+        median = list[halfLength].BMI;
+        printf("\nMedian BMI value is %.2f \n \n", median);
+        return median;
+    }
+    else
+    {
+        printf("something went wrong. Exiting Program.");
+        exit(1);
+    }  
+}
 
 int main()
 {
     char temp[64];
     int recordAmount = 0;
-    for(int i = 0; i <10; i++)
+    float median = 0;
+    int recordFound = 0;
+    for(int i = 0; i <10; i++)               //asks for records until done is entered
     {
-        strncpy(temp,getString("name: "),64);
-        // printf(" toLowered: %s\n", toLowerString(temp));
-        // printf(" strcmpOut: %i\n", strcmp("done",toLowerString(temp)));
+        strncpy(temp,getString("Enter first name (DONE to stop) "),64);
         if(strcmp("done",toLowerString(temp)) == 0)
         {
             break;
         }
-        strncpy(list[i].name,temp,64);
+        strncpy(list[i].name,temp,64);                   
         list[i].weight = getFloat("weight: ");
         list[i].height = getFloat("height: ");
         list[i].BMI = list[i].weight/pow(list[i].height,2);
+        printf("%s's BMI is %.2f \n \n",list[i].name,list[i].BMI);
         recordAmount++;
     }
-    for(int i = 0;i < recordAmount; i++)
+    sorter(list,recordAmount);   //sorts the values into ascending order
+    median = findMedian(list,recordAmount); //calculates median
+    while(1)
     {
-        printf("pre: %f\n",list[i].BMI);
-    }
-    sorter(list,recordAmount);
-    for(int i = 0;i < recordAmount; i++)
-    {
-        printf("%f\n",list[i].BMI);
+        strncpy(temp,getString("Search for what name? "),64);
+        if(strcmp("done",toLowerString(temp)) == 0)
+        {
+            exit(0);
+        }
+        for(int i = 0; i <recordAmount; i++)
+        {
+            if(strcmp(list[i].name,toLowerString(temp)) == 0)
+            {
+                if(list[i].BMI == median)
+                {
+                    printf("%s's BMI is %.2f which is EQUAL TO the median value \n\n",list[i].name,list[i].BMI);
+                }
+                else if (list[i].BMI < median)
+                {
+                    printf("%s's BMI is %.2f which is BELOW the median value \n\n",list[i].name,list[i].BMI);
+                }
+                else if (list[i].BMI > median)
+                {
+                    printf("%s's BMI is %.2f which is ABOVE the median value \n\n",list[i].name,list[i].BMI);
+                }     
+                else
+                {
+                    printf("something went wrong. Exiting program.");
+                    exit(1);
+                }
+                recordFound = 1;
+            }
+        }
+        if(recordFound == 0)
+        {
+            printf("No record found for '%s' \n\n");
+        }
+        else
+        {
+            recordFound = 0;
+        }
     }
 }
+
 
