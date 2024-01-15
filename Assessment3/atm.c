@@ -21,11 +21,6 @@
 int validateInput(char input[])
 {
     int len = strlen(input)-1;
-    if (strlen(input)>11)
-    {
-        printf("The number inputted is too big for this program \n");
-        return 0;
-    }
     if (strlen(input) == 1)
     {
         printf("null value detected \n");
@@ -37,6 +32,11 @@ int validateInput(char input[])
         {
             return 0;
         }
+    }
+    if (strlen(input)>11)
+    {
+        printf("The number inputted is too big for this program \n");
+        return 0;
     }
     return 1;
 }

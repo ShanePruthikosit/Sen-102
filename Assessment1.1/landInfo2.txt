@@ -1,0 +1,13 @@
+loam,2.7,10,15,false
+loam,2.7,10,15,true
+clay,2.7,10,15,true
+sandy,2.7,10,15,true
+loam,4,120,100,false
+clay,4,120,100,false
+sandy,4,120,100,false
+loam,15,15,100,true
+loam,15,120,100,false
+clay,15,120,100,false
+sandy,15,120,100,false
+loam,31.0,320,2999,false
+sandy,31.0,320,3000,false
