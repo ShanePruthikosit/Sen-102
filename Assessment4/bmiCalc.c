@@ -106,7 +106,16 @@ float getFloat(char *promptMessage)
         }
         else
         {
-            valid = 1;
+            sscanf(inputline,"%f",&input);
+            if(input <= 0 )
+            {
+                printf("Please Input a valid NON-ZERO float \n");
+                valid = 0;
+            }
+            else
+            {
+                valid = 1;
+            }
         }
     }
     sscanf(inputline,"%f",&input);
