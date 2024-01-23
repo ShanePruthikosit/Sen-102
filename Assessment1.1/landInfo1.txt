@@ -1,4 +1,4 @@
-loam,2.7,10,1000,true
+lomdasdadsdasd,2.7,10,1000,true
 sandy,12.5,200,5,false
 clay,15.0,300,3200,true
 loam,22.0,400,5,false
@@ -8,3 +8,4 @@ loam,22.0,400
 
 sandy,30.0,200,100,true
 clay,0,30,4,true
+clay,12.5,200,5,false
