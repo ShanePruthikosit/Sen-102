@@ -242,11 +242,6 @@ int convertTrueFalse(char input[])
 void selectCrop(char soil[],float slope,int rainfall,int elevation,int irrigation)
 {
     printf("recommended crop: ");
-    switch((int)slope)
-    {
-        case <5:
-                printf("nigger");
-    }
     printf("\n\n");
 }
 
