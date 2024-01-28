@@ -12,61 +12,6 @@
 #include <string.h>
 #include <ctype.h>
 
-// // checks if the user's input is a valid integer or not and outputs a 1 if it is
-// // Arguments:
-// //      input - input typed in by the user stored as string
-// // assumes that the input is a string
-// int validateInput(char input[])
-// {
-//     int len = strlen(input)-1;
-//     if (strlen(input)>11)
-//     {
-//         printf("The number inputted is too big for this program \n");
-//         return 0;
-//     }
-//     if (strlen(input) == 1)
-//     {
-//         printf("null value detected \n");
-//         return 0;
-//     }
-//     for(int letterNumber = 0; letterNumber < len; letterNumber++)
-//     {
-//         if (!isdigit(input[letterNumber]))
-//         {
-//             return 0;
-//         }
-//     }
-//     return 1;
-// }
-
-// // prompts the user for input and checks it validity using validateInput()
-// // if the input is invalid this function will continue prompting the user
-// // Arguments:
-// //      promptMessage - a string containing a prompt asking the user for an input
-// // assumes that the input is a string
-
-// int askInput(char *promptMessage)
-// {
-//     char inputline[128];
-//     int input = 0;
-//     int valid = 0;
-//     while (valid == 0){
-//         printf(promptMessage);
-//         fgets(inputline,sizeof(inputline),stdin);
-//         if(validateInput(inputline) == 0)
-//         {
-//             printf("%s", "Please Input a valid positive Integer \n");
-//             valid = 0;
-//         }
-//         else
-//         {
-//             valid = 1;
-//         }
-//     }
-//     sscanf(inputline,"%d",&input);
-//     return input;
-// }
-
 // Converts a string to it's lower case form
 // Arguments:
 //      inputString - a string.
