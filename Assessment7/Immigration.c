@@ -17,7 +17,7 @@ typedef struct
 {
     char passport[64]; // stores passport
     char name[128]; //stores name
-    char date[11]; //stores date
+    char date[16]; //stores date
 }immigrationRecord;
 
 // prompts the user for input and checks it validity using validateInput()
@@ -301,8 +301,7 @@ int main(int argc)
             printf("%s ",recordArray[recordCount].passport);
             printf("%s ",recordArray[recordCount].name);
             printf("%s \n",recordArray[recordCount].date);  
-            recordCount += 1;
-
+            recordCount++;
         }
     }
     option = getInt();
@@ -351,7 +350,7 @@ int main(int argc)
     fprintf(pOutfile, "%d\n", arraySize); 
     for (int i = 0; i < arraySize; i++) 
     {
-        fprintf(pOutfile, "%s,%s,%s\n", recordArray[i].passport, recordArray[i].name, recordArray[i].date);
+        fprintf(pOutfile, "%s,%s,%s", recordArray[i].passport, recordArray[i].name, recordArray[i].date);
     }
     fclose(pOutfile);
 }
