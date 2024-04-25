@@ -182,7 +182,6 @@ int colorCheck(char *inputColor)
             return 0;
         }
     }
-    printf(inputColor);
     return 1;
 }
 
@@ -194,17 +193,17 @@ int typeCheck(char inputArray[3][16])
 {
     if(strlen(inputArray[0]) > 4)
     {
-        printf("Invalid Registration number - skipping\n\n"); 
+        printf("Invalid Registration number - skipping this line\n"); 
         return 1;
     }
     if(colorCheck(inputArray[1]) != 0)
     {
-        printf("Invalid Color - skipping\n\n"); 
+        printf("Invalid Taxi Color %s - skipping this line\n",inputArray[1]); 
         return 1;
     }
     if(validateInt(inputArray[2]) != 0)
     {
-        printf("Invalid field data for distance - skipping\n"); 
+        printf("Invalid field data for distance - skipping this line\n"); 
         return 1;
     }
     return 0;
@@ -218,7 +217,7 @@ int main(int argc)
     char inputline[256];
     taxiRecord currentTaxi;
     taxiRecord smallestTaxi = {"","",999999999};
-    taxiRecord largestTaxi = {"","",0};
+    taxiRecord largestTaxi = {"","",-1};
     char inputFile[128];
     char outputFile[128];
     int taxiCount = 0;
@@ -226,18 +225,14 @@ int main(int argc)
     char parsedInput[3][16];
     int tokenIndex;
     int lineIndex = 0;
-
     strncpy(inputFile,getString("Name of input file with raw taxi data (text file)?"),128);
     strncpy(outputFile,getString("Name of output file for summary data (binary file)?"),128);
     pInfile = fopen(inputFile,"r");
-    pOutfile = fopen(outputFile, "wb");
-
-    if(pInfile == NULL || pOutfile == NULL)  //checks whether the file is successfully opened or not
+    if(pInfile == NULL)  //checks whether the file is successfully opened or not
     {
         printf("Error: cannot open file %s\n", inputFile);
         exit(1);
     }
-
     while (fgets(inputline,sizeof(inputline),pInfile) != NULL)     //loops for each line in the text file
     {
         token = strtok(inputline," ");    // breaks the line into tokens
@@ -253,6 +248,10 @@ int main(int argc)
             // printInputline(parsedInput);
             if (typeCheck(parsedInput) == 0)
             {
+                if(taxiCount == 0)
+                {
+                    pOutfile =  fopen(outputFile, "wb");
+                }
                 strcpy(currentTaxi.Registration,parsedInput[0]); 
                 strcpy(currentTaxi.Color,parsedInput[1]); 
                 sscanf(parsedInput[2],"%i",&currentTaxi.Distance); 
@@ -265,23 +264,27 @@ int main(int argc)
                     largestTaxi = currentTaxi;
                 }
                 taxiCount += 1;
-                printf("Registration Number: %s\n",currentTaxi.Registration);
-                printf("Color: %s \n",currentTaxi.Color);
-                printf("Distance: %i\n\n", currentTaxi.Distance);
+                // printf("Registration Number: %s\n",currentTaxi.Registration);
+                // printf("Color: %s \n",currentTaxi.Color);
+                // printf("Distance: %i\n\n", currentTaxi.Distance);
+                fwrite(&currentTaxi ,sizeof(taxiRecord), 1, pOutfile);
             }       
         }
     }
     if(taxiCount >= 1)
     {
-        printf("Smallest Taxi: %s (%s,%i)\n",smallestTaxi.Registration,smallestTaxi.Color,smallestTaxi.Distance);
-        printf("Largest Taxi: %s (%s,%i)\n",largestTaxi.Registration,largestTaxi.Color,largestTaxi.Distance);
-        printf("Taxis Read: %i \n", taxiCount);
+        printf("Read %i taxis in total \n", taxiCount);
+        printf("Taxi that went the smallest distance: %s (color %s, distance %i km)\n",smallestTaxi.Registration,smallestTaxi.Color,smallestTaxi.Distance);
+        printf("Taxi that went the largest distance: %s (color %s, distance %i km)\n",largestTaxi.Registration,largestTaxi.Color,largestTaxi.Distance);
+        printf("Summary Information successfully written to %s", outputFile);
     }
     else
     {
         printf("No valid taxi records found. Ending Program.\n");
         exit(0);
     }
+    fclose(pInfile);
+    fclose(pOutfile);
 }
 
 
