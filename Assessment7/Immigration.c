@@ -329,7 +329,8 @@ int main(int argc)
                     }
                 }
                 recordArray = (immigrationRecord *) realloc(recordArray, (arraySize + 1) * sizeof(immigrationRecord));
-                if (recordArray == NULL) {
+                if (recordArray == NULL) 
+                {
                     printf("Memory allocation failed\n");
                     exit(1);
                 }
